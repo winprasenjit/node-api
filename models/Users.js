@@ -13,7 +13,8 @@ var UserSchema = new mongoose.Schema({
     mobile: String,
     email: String,
     location: String,
-    role: String,
+    subject: [],
+    aboutu : String,
     sex: String,
     rating: { type: Object, "default": {
         "communication" : 1,
