@@ -7,18 +7,29 @@ var bodyParser = require('body-parser');
 var cors = require('cors');
 
 var mongoose = require('mongoose');
+require('./models/Category');
 require('./models/Posts');
 require('./models/Comments');
-require('./models/Users'); 
+require('./models/Users');
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://127.0.0.1/tutor', { useMongoClient: true });
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var category = require('./routes/category');
 
 var app = express();
 app.use(cors());
- 
+
+//create a cors middleware
+/* app.use(function(req, res, next) {
+    //set headers to allow cross origin request.
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+}); */
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -29,10 +40,11 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'))
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/category', category);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
