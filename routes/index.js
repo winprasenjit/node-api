@@ -31,17 +31,15 @@ router.post('/upload', function(req, res, next) {
     var imgPath = '';
     upload(req, res, function(err) {
         if (err) {
-            // An error occurred when uploading
-            console.log(err);
+            console.log(err); // An error occurred when uploading
             return res.status(422).send("an Error occured")
         }
 
         // No error occured.
         imgPath = req.file.path.replace('public', '');
-       /*  var readStream = fs.createReadStream(path.join(__dirname+'\\..\\', req.file.path));
-        gm(readStream,'img.jpg')
-            .resize(240, 240);
-            console.dir(readStream) */
+        var readStream = fs.createReadStream(path.join(__dirname + '\\..\\', req.file.path));
+
+        console.log(gm(path.join(__dirname + '\\..\\', req.file.path)))
         res.json({
             success: true,
             filePath: imgPath,

@@ -17,6 +17,7 @@ mongoose.connect('mongodb://127.0.0.1/tutor', { useMongoClient: true });
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var category = require('./routes/category');
+var post = require('./routes/posts');
 
 var app = express();
 app.use(cors());

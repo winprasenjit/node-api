@@ -5,9 +5,15 @@ var mongoose = require('mongoose');
 
 var PostSchema = new mongoose.Schema({
     title: String,
-    link: String,
-    upvotes: { type: Number, default: 0 },
-    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]
+    description: String,
+    price: { type: Number, default: 0 },
+    category: [{ type: String }],
+    contact: [{
+        email: String,
+        mobile: Number,
+        aboutu: String
+    }],
+    time : { type : Date, default: Date.now }
 });
 
-mongoose.model('Post', PostSchema);
+mongoose.model('Post', PostSchema, 'post');
