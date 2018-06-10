@@ -1,18 +1,39 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
+var fs = require('fs');
 
 var Post = mongoose.model('Post');
 
-
-//GET Post listing.
-router.get('/', function(req, res, next) {
-    Post.find(function(err, post) {
+router.get('/:postId', function(req, res, next) {
+    Post.findOne({ _id: req.params.postId }, function(err, post) {
         if (err) {
             return next(err);
         }
         res.json(post);
     });
+});
+
+//GET Post listing.
+router.get('/', function(req, res, next) {
+    var postList = [];
+    var limit = parseInt(req.query.count);
+    var skip = (parseInt(req.query.skip));
+
+    Post.find()
+        .skip(skip)
+        .limit(limit)
+        .lean()
+        .exec(function(err, posts) {
+            if (err) {
+                return next(err);
+            }
+            for (var i = 0; i < posts.length; i++) {
+                posts[i].editable = (posts[i].createdBy === req.query.user) ? true : false;
+                postList.push(posts[i]);
+            }
+            res.json(postList);
+        });
 });
 
 //Add Post to mongodb
@@ -48,12 +69,9 @@ router.put('/', function(req, res, next) {
 
 //Delete Post from mongodb
 router.delete('/', function(req, res, next) {
-    Post.remove({ name: req.body.name }, function(err, post) {
+    Post.findByIdAndRemove(req.body.id, function(err, post) {
         if (err) throw err;
-        res.json({
-            success: true,
-            message: 'Post successfully deleted!'
-        });
+        res.json(post);
     });
 });
 

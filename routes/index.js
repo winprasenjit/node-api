@@ -11,14 +11,22 @@ var fs = require('fs');
 
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, DIR)
+        var uploadFolder;
+        if (req.body.target) {
+            uploadFolder = DIR + '/' + req.body.target;
+        } else {
+            uploadFolder = DIR;
+        }
+        if (!fs.existsSync(uploadFolder)) { //create directory if not exist
+            fs.mkdirSync(uploadFolder);
+        }
+        cb(null, uploadFolder)
     },
     filename: function(req, file, cb) {
         cb(null, Date.now() + path.extname(file.originalname)) //Appending extension
     }
 })
 var upload = multer({ storage: storage }).single('photo');
-
 
 router.get('/', function(req, res, next) {
     res.render('index', {
@@ -39,7 +47,7 @@ router.post('/upload', function(req, res, next) {
         imgPath = req.file.path.replace('public', '');
         var readStream = fs.createReadStream(path.join(__dirname + '\\..\\', req.file.path));
 
-        console.log(gm(path.join(__dirname + '\\..\\', req.file.path)))
+        //console.log(gm(path.join(__dirname + '\\..\\', req.file.path)))
         res.json({
             success: true,
             filePath: imgPath,
@@ -49,7 +57,7 @@ router.post('/upload', function(req, res, next) {
     });
 });
 
-router.get('/posts', function(req, res, next) {
+/* router.get('/posts', function(req, res, next) {
     Post.find(function(err, posts) {
         if (err) {
             return next(err);
@@ -71,5 +79,5 @@ router.post('/posts', function(req, res, next) {
         res.json(post);
     });
 });
-
+ */
 module.exports = router;

@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 var PostSchema = new mongoose.Schema({
     title: String,
     description: String,
+    image : String,
     price: { type: Number, default: 0 },
     category: [{ type: String }],
     contact: [{
@@ -13,6 +14,7 @@ var PostSchema = new mongoose.Schema({
         mobile: Number,
         aboutu: String
     }],
+    createdBy : String,
     time : { type : Date, default: Date.now }
 });
 

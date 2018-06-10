@@ -4,6 +4,17 @@ var mongoose = require('mongoose');
 
 var User = mongoose.model('User');
 
+router.post('/testing', function(req, res, next) {
+    /* Post.findOne({ _id: req.body.id }, function(err, post) {
+        console.log(req.body.id);
+        if (err) {
+            return next(err);
+        }
+        res.json(post);
+    }); */
+    res.status(400).send('No Post found');
+});
+
 //AUthenticate user to mongodb
 router.post('/authenticate', function(req, res, next) {
     var userFound = false;
