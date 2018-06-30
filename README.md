@@ -1,11 +1,7 @@
 # node-api
 A simple node api
 
-<<<<<<< HEAD
 #Steps to configure
-=======
-#Step to configure
->>>>>>> 1c136a31032a8e6118db35ae46ccf82024805028
 
 1. Install Node js from https://nodejs.org/en/download/
 2. Install Mongo Db from https://www.mongodb.com/download-center?jmp=nav#community
