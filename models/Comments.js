@@ -4,10 +4,18 @@
 var mongoose = require('mongoose');
 
 var CommentSchema = new mongoose.Schema({
-    body: String,
-    author: String,
-    upvotes: {type: Number, default: 0},
-    post: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' }
+    coverLetter: String,
+    revisedPrice : Number,
+    author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    contact: [{
+        email: String,
+        mobile: Number,
+        aboutu: String
+    }],
+    user : { type: mongoose.Schema.Types, ref: 'Post' },
+    post: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
+    createdBy : String,
+    time : { type : Date, default: Date.now }
 });
 
-mongoose.model('Comment', CommentSchema);
+mongoose.model('Comment', CommentSchema,'comment');

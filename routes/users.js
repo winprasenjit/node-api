@@ -4,20 +4,9 @@ var mongoose = require('mongoose');
 
 var User = mongoose.model('User');
 
-router.post('/testing', function(req, res, next) {
-    /* Post.findOne({ _id: req.body.id }, function(err, post) {
-        console.log(req.body.id);
-        if (err) {
-            return next(err);
-        }
-        res.json(post);
-    }); */
-    res.status(400).send('No Post found');
-});
-
-//AUthenticate user to mongodb
+//Authenticate user to mongodb
 router.post('/authenticate', function(req, res, next) {
-    var userFound = false;
+    var userInfo;
     User.findOne({ username: req.body.username }, function(err, user) {
         if (err) {
             return res.status(500).send(err);
@@ -26,8 +15,23 @@ router.post('/authenticate', function(req, res, next) {
             if(user.password !== req.body.password){
                 res.status(400).send('Password doesn\'t match');
             } else {
-                res.json(user);
+                userInfo = user.toObject();
+                delete userInfo.password;
+                res.json(userInfo);
             }
+        } else {
+            res.status(400).send('No User found');
+        }
+    });
+});
+
+router.get('/:id', function(req, res, next) {
+    User.findOne({ _id: req.params.id }, function(err, user) {
+        if (err) {
+            return next(err);
+        }
+        if(user){
+            res.json(user);
         } else {
             res.status(400).send('No User found');
         }

@@ -19,8 +19,11 @@ router.get('/', function(req, res, next) {
     var postList = [];
     var limit = parseInt(req.query.count);
     var skip = (parseInt(req.query.skip));
+    var createdBy = req.query.user;
 
-    Post.find()
+    var searchCondition = {}//(createdBy) ? {createdBy:createdBy} : {};
+
+    Post.find(searchCondition)
         .skip(skip)
         .limit(limit)
         .lean()
